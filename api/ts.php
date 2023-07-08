@@ -1,7 +1,6 @@
 <?php
 if(isset($_GET['id'])){
     $url = $_GET['id'];
-       $url = "http://123.51.149.52:5003/".$id."";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
