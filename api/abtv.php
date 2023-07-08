@@ -1,45 +1,45 @@
 <?php
-$data = str_replace($aryList[0][$i], $_SERVER['SCRIPT_NAME'] . '?id='.$id.'&url='.$aryList[0][$i], $data);
+    header("Content-Type: application/x-mpegurl");
 
-	定义('USER_AGENT', Mozilla/5.0（iPhone；CPU iPhone OS 13_2_3像Mac OS X）AppleWebKit/605.1. 15（KHTML，像壁虎）版本/13.0. 3 mobile/15E148 Safari/604.1');
-$url = isset($_GET['url'])? $_GET['url'] : '';
-$id = isset($_GET['id'])? $_GET['id'] : '';
+	define('USER_AGENT', 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1');
+	$url = isset($_GET['url'])? $_GET['url'] : '';
+	$id = isset($_GET['id'])? $_GET['id'] : '';
 
-如果（！isset（$id））{
-回声 <<<'EOD'
+if(!isset($id)) {
+		echo <<<'EOD'
 
 EOD;
-} 其他的 {
+	} else {
 		
-如果!preg_match/.*[0-9]{5，}\. ts$/', $url)) {
-$data=撇($id)；
-查询
-查询
+		if(!preg_match('/.*[0-9]{5,}\.ts$/', $url)) {
+			$data = curl($id);
+			$aryList = array();
+			$dwCount = preg_match_all('/.*?\.ts/', $data, $aryList);
 			
-$url =
-$id =
-!
-查询
+			for($i = 0; $i < $dwCount; $i++) {
+				$data = str_replace($aryList[0][$i], $_SERVER['SCRIPT_NAME'] . '?id='.$id.'&url='.$aryList[0][$i], $data);
+			}
+			print_r($data);	
 			
-查询
-查询
-$data =
-$aryList =
-$dwCount =
+		} else {
+			$data = curl($id, $url);
+			print_r($data);
+		}
+	}
 	
-查询
-$data =
-查询
-查询
-查询
-$data =
-查询
+	function curl($id, $url = '') {
+		$ch = curl_init();
+		if($url) {
+			$bstrURL = "https://z88.ubtvfans.com/live/".$id."/$url";
+		} else {
+			$bstrURL = "https://z88.ubtvfans.com/live/".$id."/index.m3u8";
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		} 		
 		curl_setopt($ch, CURLOPT_URL, $bstrURL);        
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);		
-		curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
-		curl_setopt($ch, CURLOPT_REFERER, "http://198.16.100.90"); 
+		curl_setopt($ch, CURLOPT_USERAGENT,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36");
+		curl_setopt($ch, CURLOPT_REFERER, ""); 
 		$data = curl_exec($ch);
 		curl_close($ch);
 		return $data;
